@@ -216,7 +216,7 @@ const AdminPanel = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative text-xs md:text-sm leading-tight">
       {/* Universal Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border px-4 py-3">
         <div className="flex items-center justify-between">
@@ -302,7 +302,7 @@ const AdminPanel = () => {
       {/* Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -369,26 +369,7 @@ const AdminPanel = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Average Price */}
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex flex-col gap-2">
-                        <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-                          <span className="text-xl">₦</span>
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold">
-                            ₦{products.length > 0
-                              ? new Intl.NumberFormat('en-NG').format(
-                                Math.round(products.reduce((sum, p) => sum + (p.price_cents || 0), 0) / products.length)
-                              )
-                              : '0'}
-                          </p>
-                          <p className="text-xs text-muted-foreground">Average Price</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+
 
                   {/* Added This Month */}
                   <Card>
