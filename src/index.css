@@ -106,6 +106,30 @@ All colors MUST be HSL.
   }
 }
 
+/* Responsive root font-size to make the entire UI smaller on narrow screens.
+   Tailwind spacing utilities use rem units, so changing the root font-size
+   proportionally reduces fonts, paddings and gaps for a compact mobile UI. */
+@layer base {
+  html {
+    /* default desktop size */
+    font-size: 16px;
+  }
+
+  /* small screens: scale down UI */
+  @media (max-width: 640px) {
+    html {
+      font-size: 13px;
+    }
+  }
+
+  /* very small screens: even smaller */
+  @media (max-width: 420px) {
+    html {
+      font-size: 12px;
+    }
+  }
+}
+
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;

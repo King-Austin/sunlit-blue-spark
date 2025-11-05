@@ -66,11 +66,19 @@ const Footer = () => {
               </li>
               <li className="flex items-start space-x-3">
                 <Mail size={18} className="mt-0.5 flex-shrink-0" />
-                <span className="text-primary-foreground/90 text-sm">info@cworthenergy.com</span>
+                <span className="text-primary-foreground/90 text-sm">cworthsolarworldwide@gmail.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="mt-0.5 flex-shrink-0" />
-                <span className="text-primary-foreground/90 text-sm">123 Solar Drive, Green City, USA</span>
+                <div className="text-primary-foreground/90 text-sm">
+                  <p>WILDOT Plaza</p>
+                  <p>903 Obafemi Awolowo Way, Utako</p>
+                  <p>Abuja 900108, Federal Capital Territory</p>
+                  <p>Nigeria</p>
+                </div>
+              </li>
+              <li className="mt-2">
+                <p className="text-primary-foreground/90 text-sm font-semibold">RC: 8588929</p>
               </li>
             </ul>
           </div>
@@ -98,7 +106,7 @@ const Footer = () => {
                 <FaTiktok size={20} className="group-hover:text-primary" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/cworth_solar_energy/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-background/10 hover:bg-background rounded-lg flex items-center justify-center transition-colors group"

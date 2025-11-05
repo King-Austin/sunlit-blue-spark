@@ -77,28 +77,34 @@ const Product = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-
-
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-            Our Premium Solar Collection
+      <div className="max-w-7xl mx-auto px-3 py-6">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-4xl font-bold mb-3 text-foreground">
+            Our Solar Collection
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Discover our comprehensive range of high-quality solar energy products designed to power your sustainable future
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Quality solar energy products for your sustainable future
           </p>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-4">
           <input
             aria-label="Search products"
             placeholder="Search products..."
-            className="w-full md:w-1/2 border rounded px-3 py-2"
+            className="w-full border rounded-lg px-3 py-2 text-base"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button onClick={() => setSearch('')} variant="outline">Clear</Button>
+          {search && (
+            <Button
+              onClick={() => setSearch('')}
+              variant="outline"
+              className="shrink-0"
+            >
+              Clear
+            </Button>
+          )}
         </div>
 
         {loading ? (
@@ -113,54 +119,64 @@ const Product = () => {
 
 
       <Dialog open={!!quickViewProduct} onOpenChange={() => setQuickViewProduct(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{quickViewProduct?.name}</DialogTitle>
-            <DialogDescription>{quickViewProduct?.shortDescription}</DialogDescription>
-          </DialogHeader>
+        <DialogContent className="w-full max-w-2xl mx-auto p-6">
           {quickViewProduct && (
-            <div className="space-y-4">
-              <img
-                src={quickViewProduct.image}
-                alt={quickViewProduct.name}
-                className="w-full h-48 object-cover rounded"
-                loading="lazy"
-              />
-              <p className="text-2xl font-bold text-primary">₦{quickViewProduct.price.toLocaleString()}</p>
-              <p className="text-muted-foreground">{quickViewProduct.fullDescription}</p>
-              <div className="flex gap-2">
-                <Link to={`/product/${quickViewProduct.id}`} className="flex-1">
-                  <Button className="w-full">View Full Details</Button>
-                </Link>
-                <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in the ${quickViewProduct.name} priced at ₦${quickViewProduct.price.toLocaleString()}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1"
-                >
-                  <Button variant="outline" className="w-full bg-whatsapp hover:bg-whatsapp/90 text-whatsapp-foreground">
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    Order
-                  </Button>
-                </a>
+            <div>
+              <h2 className="text-2xl font-bold mb-4">{quickViewProduct?.name}</h2>
+              <p className="text-2xl font-bold text-black mb-6">₦{quickViewProduct.price.toLocaleString()}</p>
+
+              <div className="text-sm text-gray-700 space-y-4 mb-8">
+                {quickViewProduct.shortDescription && (
+                  <p className="mb-4">{quickViewProduct.shortDescription}</p>
+                )}
+                <div className="space-y-2">
+                  {quickViewProduct.fullDescription.split('\n').map((line: string, i: number) => (
+                    line.trim() && (
+                      <p key={i} className="flex gap-2">
+                        <span>•</span>
+                        <span>{line.trim()}</span>
+                      </p>
+                    )
+                  ))}
+                </div>
               </div>
+
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in the ${quickViewProduct.name} priced at ₦${quickViewProduct.price.toLocaleString()}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full"
+              >
+                <Button
+                  className="w-full h-14 text-lg font-semibold text-white bg-[#25D366] hover:bg-[#1fa855]"
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  Order via WhatsApp
+                </Button>
+              </a>
             </div>
           )}
         </DialogContent>
       </Dialog>
 
       {quickViewProduct && (
-        <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 md:hidden z-50">
+        // Mobile floating action button (FAB) — smaller and less intrusive than a full-width bar
+        <div
+          className="md:hidden"
+          style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 9999, paddingRight: 'env(safe-area-inset-right)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
           <a
             href={`https://wa.me/?text=${encodeURIComponent(`Hi! I'm interested in the ${quickViewProduct.name} priced at ₦${quickViewProduct.price.toLocaleString()}`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="block"
+            aria-label="Order via WhatsApp"
           >
-            <Button className="w-full bg-whatsapp hover:bg-whatsapp/90 text-whatsapp-foreground font-semibold py-3">
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Order via WhatsApp
-            </Button>
+            <button
+              className="rounded-full shadow-lg flex items-center justify-center"
+              style={{ width: 56, height: 56, backgroundColor: '#25D366', color: '#fff', border: 'none' }}
+            >
+              <MessageCircle className="h-6 w-6" />
+            </button>
           </a>
         </div>
       )}
@@ -191,7 +207,7 @@ const FilteredGrid = ({ products, search, favorites, toggleFavorite, setQuickVie
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 animate-fade-in">
       {filtered.map((product: any) => (
         <ProductCard key={product.id} product={product} isFavorite={favorites.includes(product.id)} toggleFavorite={() => toggleFavorite(product.id)} setQuickViewProduct={setQuickViewProduct} />
       ))}

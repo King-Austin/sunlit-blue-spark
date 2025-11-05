@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { products as initialProducts } from "@/data/products";
+import { COMPANY_PHONE, formatWhatsAppMessage } from "@/lib/constants";
+import Footer from "@/components/Footer";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -37,57 +39,70 @@ const ProductDetails = () => {
 
   const formatPrice = (v: number) => `₦${new Intl.NumberFormat('en-NG').format(v)}`;
 
-  const whatsappMessage = `Hi, I'm interested in the ${product.name} priced at ${formatPrice(priceVal)}.`;
-  const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappMessage = formatWhatsAppMessage(product.name, formatPrice(priceVal));
+  const whatsappLink = `https://wa.me/${COMPANY_PHONE}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link to="/">
-            <Button variant="ghost">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
-            </Button>
-          </Link>
-        </div>
+    <div className="flex flex-col min-h-screen bg-background">
+      <div className="flex-grow">
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="mb-6">
+            <Link to="/">
+              <Button variant="ghost">
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Products
+              </Button>
+            </Link>
+          </div>
 
-        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-lg">
-          <div className="grid md:grid-cols-2 gap-8 p-8 items-start">
-            {/* Left: large image */}
-            <div className="rounded-xl overflow-hidden bg-muted">
-              {imageSrc ? (
-                <img src={imageSrc} alt={product.name} className="w-full h-[520px] object-cover rounded-lg" />
-              ) : (
-                <div className="w-full h-[520px] bg-muted flex items-center justify-center text-muted-foreground">No image</div>
-              )}
-            </div>
-
-            {/* Right: details */}
-            <div className="flex flex-col justify-between">
-              <div>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 text-foreground uppercase">
-                  {product.name}
-                </h1>
-
-                <div className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                  {formatPrice(Number(priceVal))}
+          <div className="bg-white">
+            <div className="max-w-4xl mx-auto p-6">
+              <div className="space-y-6">
+                {/* Product Image */}
+                <div className="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden">
+                  {imageSrc ? (
+                    <img src={imageSrc} alt={product.name} className="w-full h-full object-contain" />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">No image</div>
+                  )}
                 </div>
 
-                <p className="text-base text-muted-foreground leading-relaxed mb-8">{description}</p>
-              </div>
+                {/* Product Details */}
+                <div className="space-y-6">
+                  <h1 className="text-3xl font-bold text-gray-900">
+                    {product.name}
+                  </h1>
 
-              <div>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl shadow-lg flex items-center justify-center gap-3">
-                    <MessageCircle className="h-5 w-5" /> Order via WhatsApp
-                  </Button>
-                </a>
+                  <div className="text-3xl font-bold text-gray-900">
+                    {formatPrice(Number(priceVal))}
+                  </div>
+
+                  <div className="prose prose-gray max-w-none">
+                    <h2 className="text-xl font-semibold mb-4">Product Description</h2>
+                    {description.split('\n').map((line, i) => (
+                      line.trim() && (
+                        <p key={i} className="flex items-start gap-2 text-gray-600 mb-2">
+                          <span className="mt-1.5">•</span>
+                          <span>{line.trim()}</span>
+                        </p>
+                      )
+                    ))}
+                  </div>
+
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block mt-8 mb-8">
+                    <Button className="w-full bg-[#25D366] hover:bg-[#1fa855] text-white h-14 text-lg font-semibold">
+                      <MessageCircle className="h-6 w-6 mr-2" />
+                      Order via WhatsApp
+                    </Button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <Footer />
     </div>
+
   );
 };
 
